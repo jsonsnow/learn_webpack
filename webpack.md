@@ -131,5 +131,67 @@ babel其实是几个模块化的包，其核心功能位于babel-core的npm包�
 ####babel的配置
 babel可以完全在webpack.config.js中进行配置，但是考虑到babel具有非常多的配置选项，在单一的webpack.config.js文件进行配置使得文件显得太复杂，因此一些开发者支持吧babel的配置选项放在单独的名为".babelrc"，（webpack会自动调用.babelrc里的babel配置选项）
 
+#### CSS module
+CSS modules的技术意在把JS的模块化思想带入CSS中来，通过CSS模块，所有的类名，动画名默认都只作用于当前模块。只需要在CSS loader总进线简单的配置，然后就可以直接把CSS的类名传递到组件的代码中，
 
+```
+module.exports = {
+
+    ...
+
+    module: {
+        rules: [
+            {
+                test: /(\.jsx|\.js)$/,
+                use: {
+                    loader: "babel-loader"
+                },
+                exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: "style-loader"
+                    }, {
+                        loader: "css-loader",
+                        options: {
+                            modules: true, // 指定启用css modules
+                            localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+};
+
+```
  
+#### CSS预处理
+Sass和Less之类的预处理器是对原生CSS的扩展，它们允许你使用类似于variables，nesting,mixins,inheritance等不存在与css中的特性来写CSS，CSS预处理器可以把这些特殊的语句转换为浏览器可识别的CSS语句
+在webpack里使用相关loaders进行配置就可以使用了，一下常用CSS处理loaders:
+
+* Less loader
+* Sass loader
+* Style loader
+
+CSS的处理平台-postCSS,它可以帮助你的CSS实现更多的功能
+postcss-loader autoprefixer（自动添加前缀的插件）
+npm install --save-dev postcss-loader autoprefixer
+
+
+config新加一个loader
+{
+ loader:'postcss-loader'
+}
+postcss-loader需要建一个postcss.config.js的文件
+
+```
+postcss.config.js
+module.exports = {
+	plugins:[require('autoprefixer')]
+}
+```
+
+#### 插件(Plugins)
