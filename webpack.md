@@ -195,3 +195,46 @@ module.exports = {
 ```
 
 #### 插件(Plugins)
+插件是用来扩展Webpack功能的，他会在整个构建过程中生效，执行相关的任务。
+loaders和plugins常常被弄混，但是他们其实是完全不同的东西，可以这么来说loaders是在打包构建过程用来处理源文件的(JSX,Scss,Less...)，一次处理一个，插件并不直接操作单个文件，它直接对整个构建过程起作用。
+
+webpack有很多内置插件，同时也有很多第三方插件，可以让我们完成更加丰富的功能
+
+#### 使用插件的方法
+要使用某个插件，我们需要通过npm安装它，然后要做的就是在webpack配置中的plugins关键字部分添加该插件的一个实例，
+eg:添加一个给打包后代码添加版权申明的插件
+
+```
+const.webpack = require('webpack');
+module.exports = {
+
+	plugins:[new webpack.BannerPlugin('版权所有，翻版必究')
+	]
+}
+```
+
+以上为webpack插件的基础用法，几种常用插件
+
+#### HtmlWebpackPlugin
+这个插件的作用依据一个简单的index.html模板，生成一个自动引用你打包后的js文件新的index.html、这在每次生成js文件名称不同事非常有用
+
+```
+cnpm install --save-dev html-webpack-plugin
+```
+
+
+#### Hot Module Replacement
+Hot Module Replacement（HMR）它允许你在修改组件代码后，自定刷新实时预览修改后的效果
+
+* 1.在webpack配置文件中添加HMR插件
+* 2.在webpack Dev Server中添加hot参数
+
+不过配置完这些后，JS模块其实还是不能自动加载的，还需要在你的JS模块中执行一个webpack提供的api才能实现热加载，使用我们熟悉的Babel可以方便的实现功能热加载
+
+* babel和webpack是独立工作的
+* 两者可以一起工作
+* 二者都可以通过插件扩展功能
+* HMR是一个webpack插件，它让你浏览实时观察模块修改后的效果，但需要对模块进行额外的配置
+* babel有一个react-transform-hrm的插件，可以在不对React模块进行额外配置的前提下让HMR正常工作
+* 
+
